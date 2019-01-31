@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="@dimen/general_space">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/itemNews"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/userphotoNews"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@color/colorAccent"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/usernameNews"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text=""
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="@+id/userphotoNews"
+            android:layout_marginStart="60dp"
+            android:layout_marginLeft="60dp" />
+
+        <TextView
+            android:id="@+id/dateNews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/usernameNews"
+            app:layout_constraintLeft_toLeftOf="@+id/userphotoNews"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="60dp"
+            tools:text=""/>
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general_space"
+            android:ellipsize="end"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/dateNews"/>
+
+        <TextView
+            android:id="@+id/showPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Show full post..."
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/post" />
+
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general_space"
+            android:text="Comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/share"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/post"
+            app:layout_constraintTop_toBottomOf="@id/post"/>
+
+        <TextView
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general_space"
+            android:text="Share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/comment"
+            app:layout_constraintTop_toBottomOf="@id/post"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
