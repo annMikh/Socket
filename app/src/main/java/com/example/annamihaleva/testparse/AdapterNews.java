@@ -34,7 +34,6 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<Posts> partOfPosts;
     static List<Posts> allPosts = new ArrayList<>();
-    HashMap<Integer, Integer> idPos = new HashMap<>();
     HashMap<Integer, Posts> map = new HashMap<>();
 
     int visibleThreshold = 5;
@@ -160,7 +159,7 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void clear() {
-        idPos.clear();
+        map.clear();
         partOfPosts.clear();
         allPosts.clear();
         notifyDataSetChanged();

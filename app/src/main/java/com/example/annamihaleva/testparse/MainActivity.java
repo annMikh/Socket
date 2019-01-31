@@ -2,10 +2,13 @@ package com.example.annamihaleva.testparse;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
         news = findViewById(R.id.recycler_news);
 
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        news.setLayoutManager(layoutManager);
+        AtomicReference<LinearLayoutManager> layoutManager =
+                new AtomicReference<>(new LinearLayoutManager(MainActivity.this));
+        news.setLayoutManager(layoutManager.get());
 
         Parsing task = new Parsing(MainActivity.this, news);
         task.execute();
