@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="general_space">12dp</dimen>
+</resources>
