@@ -132,7 +132,6 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView userName;
         TextView date;
         TextView postBody;
-        TextView showFull;
         ImageView userPhoto;
         ConstraintLayout itemNews;
 
@@ -144,7 +143,6 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             postBody = itemView.findViewById(R.id.post);
             userPhoto = itemView.findViewById(R.id.userphotoNews);
             itemNews = itemView.findViewById(R.id.itemNews);
-            //showFull = itemView.findViewById(R.id.showPost);
         }
     }
 
@@ -174,9 +172,7 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (partOfPosts.size() > p) {
                 partOfPosts.remove(map.get(id));
                 notifyItemRemoved(p);
-                notifyItemChanged(p);
             }
-             notifyDataSetChanged();
 
             for(int i = 0; i < allPosts.size(); ++i)
                 map.put(allPosts.get(i).postId, allPosts.get(i));
@@ -199,10 +195,8 @@ public class AdapterNews extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             partOfPosts.add(0, post);
 
             notifyItemInserted(0);
-            notifyItemChanged(0);
         }
 
-        notifyDataSetChanged();
         for(int i = 0; i < allPosts.size(); ++i)
             map.put(allPosts.get(i).postId, allPosts.get(i));
 

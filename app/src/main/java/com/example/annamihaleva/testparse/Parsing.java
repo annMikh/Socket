@@ -43,10 +43,10 @@ public class Parsing extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        progressBar = new ProgressBar(context,null, android.R.attr.progressBarStyleLarge);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar = new ProgressBar(context,null, android.R.attr.progressBarStyleLarge);
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
+//        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+//        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -85,25 +85,25 @@ public class Parsing extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        progressBar.setVisibility(View.GONE);
 
         MainActivity.adapter = adapter;
         MainActivity.news.setAdapter(adapter);
-
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_down);
+
         MainActivity.news.setLayoutAnimation(controller);
         MainActivity.news.getAdapter().notifyDataSetChanged();
         MainActivity.news.scheduleLayoutAnimation();
 
         MainActivity.loading = false;
 
-        MainActivity.adapter.setLoadMore(() -> {
-            if (adapter.getItemCount() < resp.response.size()) {
-                partOfPosts.add(null);
-                adapter.notifyItemInserted(partOfPosts.size() - 1);
+        if (adapter.getItemCount() < resp.response.size()) {
+            partOfPosts.add(null);
+            adapter.notifyItemInserted(partOfPosts.size() - 1);
+            adapter.setLoadMore(() -> {
+
                 new Handler().postDelayed(() -> {
                     if (partOfPosts.size() > 0)
-                        partOfPosts.remove(partOfPosts.size() - 1);
+                        partOfPosts.remove(partOfPosts.size()-1);
                     adapter.notifyItemRemoved(partOfPosts.size());
 
                     int start = partOfPosts.size();
@@ -111,9 +111,10 @@ public class Parsing extends AsyncTask<Void, Void, Void> {
                     fillArray(start, end);
                     adapter.notifyDataSetChanged();
                     adapter.setLoaded();
-                }, 1000);
-            }
-        });
+                }, 700);
+
+            });
+        }
     }
 
     private void fillArray(int start, int end){
