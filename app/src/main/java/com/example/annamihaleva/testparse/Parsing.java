@@ -5,30 +5,32 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import com.google.gson.Gson;
-import org.java_websocket.client.WebSocketClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.socket.client.IO;
+import io.socket.emitter.Emitter;
+import io.socket.engineio.client.Socket;
+
 public class Parsing extends AsyncTask<Void, Void, Void> {
 
-    private WebSocketClient client = null;
+
     private ProgressBar progressBar;
     private RecyclerView news;
     Context context;
+    MessageSocket mesResponse;
 
     public static Response resp = new Response();
     List<Posts> partOfPosts = new ArrayList<>();
@@ -39,14 +41,17 @@ public class Parsing extends AsyncTask<Void, Void, Void> {
         context = c;
     }
 
+    private io.socket.client.Socket socket;
+    {
+        try {
+            socket = IO.socket("https://websuck1t.herokuapp.com");
+        } catch (URISyntaxException e) {}
+    }
+
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-//        progressBar = new ProgressBar(context,null, android.R.attr.progressBarStyleLarge);
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,100);
-//        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-//        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -64,27 +69,32 @@ public class Parsing extends AsyncTask<Void, Void, Void> {
         fillArray(0, 10);
         AdapterNews.allPosts = resp.response;
 
-        try {
-            if (client == null && resp != null)
-                client = new Socket(
-                    new URI("ws://websuck1t.herokuapp.com/posts/subscribe/" + resp.token));
-        }
-        catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
 
-        if (client != null)
-            client.connect();
+        socket.on("postUpdates", args -> {
+            Gson g1 = new Gson();
+            mesResponse = g1.fromJson(args.toString(), MessageSocket.class);
+
+            if (mesResponse != null) {
+                resp.token = mesResponse.token;
+
+                if (mesResponse.response.deleted != null)
+                    for (int i = 0; i < mesResponse.response.deleted.size(); ++i)
+                        adapter.removeAt(mesResponse.response.deleted.get(i));
+
+                if (mesResponse.response.added != null)
+                    adapter.addPost(mesResponse.response.added);
+            }
+        });
 
         adapter = new AdapterNews(context, partOfPosts, news);
-        Socket.setAdapter(adapter);
-
         return null;
     }
+
 
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
+        socket.connect();
 
         MainActivity.adapter = adapter;
         MainActivity.news.setAdapter(adapter);
